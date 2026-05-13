@@ -191,7 +191,7 @@ Partial shapes are generated automatically during training via ray-casting from 
 
 Place training shapes in `shapes_train/` and test shapes in `shapes_test/`.
 
-## Train Feature Extractor
+## Training
 
 > **Note**: All scripts assume they are run from their respective subdirectory (`train/` or `registration/`). Config paths (e.g., `../data/`, `../pretrained/`) are relative to the subdirectory. Alternatively, use the convenience scripts in `scripts/` which handle the directory change automatically.
 
