@@ -1,8 +1,12 @@
 # NFR: Neural Feature-Guided Non-Rigid Shape Registration
 
-Official implementation of **"NFR: Neural Feature-Guided Non-Rigid Shape Registration"** (Computer Graphics Forum).
+Official implementation of **"NFR: Neural Feature-Guided Non-Rigid Shape Registration"**.
 
-NFR is a learning-based framework for 3D non-rigid shape registration that combines deep functional maps with iterative geometric optimization. It handles both **full-to-full** and **partial-to-full** shape matching **without correspondence supervision**.
+## Introduction
+We propose a novel learning-based framework for 3D shape registration, which overcomes the challenges of significant non-rigid deformation and partiality undergoing among input shapes, and, remarkably, requires no correspondence annotation during training. Our key insight is to incorporate neural features learned by deep learning-based shape matching networks into an iterative, geometric shape registration pipeline. The advantage of our approach is two-fold -- On one hand, neural features provide more accurate and semantically meaningful correspondence estimation than spatial features (e.g., coordinates), which is critical in the presence of large non-rigid deformations; On the other hand, the correspondences are dynamically updated according to the intermediate registrations and filtered by consistency prior, which prominently robustify the overall pipeline. Empirical results show that, with as few as dozens of training shapes of limited variability, our pipeline achieves state-of-the-art results on several benchmarks of non-rigid point cloud matching and partial shape matching across varying settings, but also delivers high-quality correspondences between unseen challenging shape pairs that undergo both significant extrinsic and intrinsic deformations, in which case neither traditional registration methods nor intrinsic methods work.
+
+
+<!-- NFR is a learning-based framework for 3D non-rigid shape registration that combines deep functional maps with iterative geometric optimization. It handles both **full-to-full** and **partial-to-full** shape matching **without correspondence supervision**. -->
 
 ## Table of Contents
 
@@ -162,20 +166,11 @@ data/
 ```
 
 ### Supported Datasets
-
-| Dataset | # Shapes | Description | Source |
-|---------|----------|-------------|--------|
-| **FAUST_r** | 100 | 10 subjects x 10 poses (remeshed) | [FAUST](http://faust.is.tue.mpg.de/) |
-| **SCAPE_r** | 71 | Single subject, varying poses (remeshed) | [SCAPE](https://ai.stanford.edu/~drMDR/scape/) |
-| **SHREC19_r** | 44 | Different identities and poses (remeshed) | [SHREC19](http://www.shrec.net/) |
-| **SHREC07-H** | 20 | Heterogeneous human shapes | [SHREC07](http://www.shrec.net/) |
-| **DT4D-H** | 10 categories | Heterogeneous humanoid shapes | [DT4D](https://github.com/magnet2022smooth) |
-| **TOPKIDS** | 26 | Kid shapes with topological perturbations | [TOPKIDS](http://www.shrec.net/) |
-| **MedShapeNet** | 60 patients | Stomach/spleen/pancreas shapes | [MedShapeNet](https://medshapenet.ikim.nrw/) |
+You can download dataset refer to [this repo](https://github.com/dongliangcao/Self-Supervised-Multimodal-Shape-Matching) or from official repo. To get FAUST_r, SCAPE_r, SHREC19_r, SHREC07-H, DT4D-H, etc..
 
 ### Preprocessing
 
-#### 1. Compute LBO eigenvectors (required for training)
+#### 1. Compute LBO eigenvectors
 
 Use the provided preprocessing script:
 
@@ -198,11 +193,20 @@ Partial shapes are generated automatically during training via ray-casting from 
 
 Place training shapes in `shapes_train/` and test shapes in `shapes_test/`.
 
-## Training
+## Train Feature Extractor
 
 > **Note**: All scripts assume they are run from their respective subdirectory (`train/` or `registration/`). Config paths (e.g., `../data/`, `../pretrained/`) are relative to the subdirectory. Alternatively, use the convenience scripts in `scripts/` which handle the directory change automatically.
 
-### Train Partial-DFR Feature Extractor (recommended)
+The full-to-full code is based on our prior work [DFR](https://github.com/rqhuang88/DFR).
+
+### [DFR] Train Full DFR Feature Extractor
+
+```bash
+cd train
+python train_full_dfr.py --config train_full_sf
+```
+
+### [Partial-DFR] Train Partial-DFR Feature Extractor
 
 ```bash
 # Option 1: run directly
@@ -213,41 +217,21 @@ python train_partial_dfr.py --config train_partial_sf
 bash scripts/train_partial.sh
 ```
 
-### Train Full DFR Feature Extractor
-
-```bash
-cd train
-python train_full_dfr.py --config train_full_sf
-```
-
 ### Evaluate Feature Extractor
 
 ```bash
 cd train
 
-# Evaluate partial feature extractor
-python test_partial_dfr.py --config train_partial_sf
-
 # Evaluate full feature extractor
 python test_full_dfr.py --config train_full_sf
+
+# Evaluate partial feature extractor
+python test_partial_dfr.py --config train_partial_sf
 ```
 
 Checkpoints will be saved in `train/ckpt/{expname}/`.
 
-### Training Configuration
-
-Key parameters in config YAML files:
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `training.epochs` | Number of training epochs | 1000 (partial) / 50 (full) |
-| `training.batch_size` | Batch size | 5 |
-| `optimizer.lr` | Learning rate | 2e-4 (partial) / 2e-3 (full) |
-| `fmap.n_fmap` | Number of functional map basis | 50 |
-| `fmap.n_feat` | Feature dimension | 128 |
-| `loss.min_alpha / max_alpha` | Temperature annealing range | 1 / 100 |
-
-## Registration (Inference)
+## Registration
 
 ### Full-to-Full Registration
 
@@ -295,35 +279,21 @@ Key parameters in registration config:
 | Full registration | 1, 0.01, 20 | 0.01, 1, 1 |
 | Partial registration | 0.01, 1, 20 | 0.01, 1, 1 |
 
-## Pretrained Models
-
-We will release pretrained models upon paper acceptance. Place `.pth` files in the `pretrained/` directory.
-
-| Model | Training Data | Setting | Download |
-|-------|---------------|---------|----------|
-| `full_sf.pth` | S&F (FAUST_r + SCAPE_r) | Full-to-Full | Coming soon |
-| `partial_sf.pth` | S&F (FAUST_r + SCAPE_r) | Partial-to-Full | Coming soon |
-| `partial_mp.pth` | M&P (AMASS subset, 340 shapes) | Partial-to-Full | Coming soon |
-| `orientation_regressor.pth` | SURREAL (5000 shapes) | Orientation alignment | Coming soon |
 
 ## Citation
 
 If you find this work useful, please cite:
 
 ```bibtex
-@article{nfr2025cgf,
+@article{jiang2025nfr,
   title={NFR: Neural Feature-Guided Non-Rigid Shape Registration},
-  author={},
-  journal={Computer Graphics Forum},
+  author={Jiang, Puhua and Chen, Zhangquan and Sun, Mingze and Huang, Ruqi},
+  journal={arXiv preprint arXiv:2505.22445},
   year={2025}
 }
 ```
 
 ## Acknowledgement
-
-This work was supported by the National Natural Science Foundation of China under contract No. 62171256, 62331006.
-
-The full-to-full registration code is based on our prior work [DFR](https://github.com/rqhuang88/DFR).
 
 Parts of this codebase are built upon:
 - [DFR](https://github.com/rqhuang88/DFR)
