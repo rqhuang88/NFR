@@ -1,0 +1,45 @@
+# Partial-to-Full Registration Config
+datasetname: &target_testdataset scape_partial
+templatename: &tem scape
+expname: &res NFR_partial_register
+exp_num: 1
+
+indextype: index_partial
+
+dataset:
+  name: *target_testdataset
+  class: *target_testdataset
+  root_dataset: ../data/
+  root_train: *tem
+  root_test: *target_testdataset
+  cache_dir: *target_testdataset
+
+source_temp_name: *tem
+source_data_set_name: *tem
+target_data_set_name: *target_testdataset
+model_path: ../pretrained/partial_sf.pth
+
+save_path: ../results/
+rot: rots 1
+seed: 1
+save_name: *res
+partial: True
+
+# Hyper-parameters for partial registration
+stage1:
+  rmse: 0.01
+  cd: 1
+  arap: 20
+  sr: 0.2
+
+stage2:
+  rmse: 0.01
+  cd: 1
+  arap: 1
+  sr: 0.2
+
+misc:
+  cuda: True
+  geo: False
+  dgpcl: True
+  device: 0

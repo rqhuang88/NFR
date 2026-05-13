@@ -1,0 +1,73 @@
+datasetname: &usedataset scape
+templatename: &tem scape
+expname: nfr_partial_sf
+
+test:
+  model_path: ckpt/ep_val_best.pth
+  test_full2full: False
+
+unsupervised: True
+
+source_data_set_name: *tem
+target_data_set_name: *usedataset
+
+dataset:
+  name: *usedataset
+  class: *usedataset
+  subset: remeshed
+  type: vts
+  root_dataset: ../data/
+  root_train: *usedataset
+  root_test: *usedataset
+  root_geodist: geodist/
+  cache_dir: ../data/cache/
+  with_sym: False
+
+optimizer:
+  lr: 2e-4
+  b1: 0.9
+  b2: 0.99
+  decay_iter: 10
+  decay_factor: 0.5
+
+training:
+  batch_size: 5
+  epochs: 1000
+  model: dgcnnsample
+
+fmap:
+  n_fmap: 50
+  k_eig: 128
+  n_feat: 128
+  C_in: 128
+  lambda_: 100
+  resolvant_gamma: 0.5
+  robust: True
+
+loss:
+  w_nce: 0
+  w_gt: 1
+  w_ortho: 0
+  w_Qortho: 0
+  w_bij: 0
+  w_res: 1
+  w_rank: -0.1
+  w_dist: 0.2
+  min_alpha: 1
+  max_alpha: 100
+
+misc:
+  cuda: True
+  device: 0
+  checkpoint_interval: 1
+  log_interval: 1000
+
+attention:
+  num_head: 4
+  gnn_dim: 128
+  ref_n_layers: 1
+  cross_sampling_ratio: 0.7
+  attention_type: normal
+
+overlap:
+  overlap_feat_dim: 32
