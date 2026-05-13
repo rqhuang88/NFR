@@ -16,7 +16,6 @@ We propose a novel learning-based framework for 3D shape registration, which ove
 - [Data Preparation](#data-preparation)
 - [Training](#training)
 - [Registration](#registration)
-- [Citation](#citation)
 - [Acknowledgement](#acknowledgement)
 
 ## Overview
@@ -277,19 +276,6 @@ Key parameters in registration config:
 |---------|------------------------|------------------------|
 | Full registration | 1, 0.01, 20 | 0.01, 1, 1 |
 | Partial registration | 0.01, 1, 20 | 0.01, 1, 1 |
-
-## Citation
-
-If you find this work useful, please cite:
-
-```bibtex
-@article{jiang2025nfr,
-  title={NFR: Neural Feature-Guided Non-Rigid Shape Registration},
-  author={Jiang, Puhua and Zhang, Quan and Sun, Mingze and Huang, Ruqi},
-  journal={arXiv preprint arXiv:2505.22445},
-  year={2025}
-}
-```
 
 ## Acknowledgement
 
