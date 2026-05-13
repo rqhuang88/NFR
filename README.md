@@ -1,6 +1,6 @@
 # NFR: Neural Feature-Guided Non-Rigid Shape Registration
 
-Official implementation of **"NFR: Neural Feature-Guided Non-Rigid Shape Registration"**.
+Official implementation of **"NFR: Neural Feature-Guided Non-Rigid Shape Registration"**. [[arXiv]](https://arxiv.org/abs/2505.22445)
 
 ## Introduction
 We propose a novel learning-based framework for 3D shape registration, which overcomes the challenges of significant non-rigid deformation and partiality undergoing among input shapes, and, remarkably, requires no correspondence annotation during training. Our key insight is to incorporate neural features learned by deep learning-based shape matching networks into an iterative, geometric shape registration pipeline. The advantage of our approach is two-fold -- On one hand, neural features provide more accurate and semantically meaningful correspondence estimation than spatial features (e.g., coordinates), which is critical in the presence of large non-rigid deformations; On the other hand, the correspondences are dynamically updated according to the intermediate registrations and filtered by consistency prior, which prominently robustify the overall pipeline. Empirical results show that, with as few as dozens of training shapes of limited variability, our pipeline achieves state-of-the-art results on several benchmarks of non-rigid point cloud matching and partial shape matching across varying settings, but also delivers high-quality correspondences between unseen challenging shape pairs that undergo both significant extrinsic and intrinsic deformations, in which case neither traditional registration methods nor intrinsic methods work.
@@ -278,7 +278,6 @@ Key parameters in registration config:
 | Full registration | 1, 0.01, 20 | 0.01, 1, 1 |
 | Partial registration | 0.01, 1, 20 | 0.01, 1, 1 |
 
-
 ## Citation
 
 If you find this work useful, please cite:
@@ -286,7 +285,7 @@ If you find this work useful, please cite:
 ```bibtex
 @article{jiang2025nfr,
   title={NFR: Neural Feature-Guided Non-Rigid Shape Registration},
-  author={Jiang, Puhua and Chen, Zhangquan and Sun, Mingze and Huang, Ruqi},
+  author={Jiang, Puhua and Zhang, Quan and Sun, Mingze and Huang, Ruqi},
   journal={arXiv preprint arXiv:2505.22445},
   year={2025}
 }
