@@ -15,8 +15,7 @@ We propose a novel learning-based framework for 3D shape registration, which ove
 - [Installation](#installation)
 - [Data Preparation](#data-preparation)
 - [Training](#training)
-- [Registration (Inference)](#registration-inference)
-- [Pretrained Models](#pretrained-models)
+- [Registration](#registration)
 - [Citation](#citation)
 - [Acknowledgement](#acknowledgement)
 
